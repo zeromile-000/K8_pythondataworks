@@ -1,0 +1,29 @@
+digraph Tree {
+node [shape=box, fontname="helvetica"] ;
+edge [fontname="helvetica"] ;
+0 [label="worst radius <= 16.795\ngini = 0.468\nsamples = 426\nvalue = [159, 267]\nclass = T"] ;
+1 [label="worst concave points <= 0.136\ngini = 0.161\nsamples = 284\nvalue = [25, 259]\nclass = T"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label="area error <= 91.555\ngini = 0.031\nsamples = 252\nvalue = [4, 248]\nclass = T"] ;
+1 -> 2 ;
+3 [label="gini = 0.024\nsamples = 251\nvalue = [3, 248]\nclass = T"] ;
+2 -> 3 ;
+4 [label="gini = 0.0\nsamples = 1\nvalue = [1, 0]\nclass = F"] ;
+2 -> 4 ;
+5 [label="worst texture <= 25.62\ngini = 0.451\nsamples = 32\nvalue = [21, 11]\nclass = F"] ;
+1 -> 5 ;
+6 [label="gini = 0.375\nsamples = 12\nvalue = [3, 9]\nclass = T"] ;
+5 -> 6 ;
+7 [label="gini = 0.18\nsamples = 20\nvalue = [18, 2]\nclass = F"] ;
+5 -> 7 ;
+8 [label="texture error <= 0.473\ngini = 0.106\nsamples = 142\nvalue = [134, 8]\nclass = F"] ;
+0 -> 8 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
+9 [label="gini = 0.0\nsamples = 5\nvalue = [0, 5]\nclass = T"] ;
+8 -> 9 ;
+10 [label="worst concavity <= 0.191\ngini = 0.043\nsamples = 137\nvalue = [134, 3]\nclass = F"] ;
+8 -> 10 ;
+11 [label="gini = 0.48\nsamples = 5\nvalue = [2, 3]\nclass = T"] ;
+10 -> 11 ;
+12 [label="gini = 0.0\nsamples = 132\nvalue = [132, 0]\nclass = F"] ;
+10 -> 12 ;
+}
