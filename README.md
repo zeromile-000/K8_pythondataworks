@@ -74,5 +74,5 @@ plot_tree(dt,class_names=["악성","양성"],
           filled=True)
 plt.show()
 
-### 트리의 특성 중요도 파악 (막대, 스케터, )
+### 트리의 특성 중요도 파악 (막대, 스케터(단위 관계), 선)
 dt.feature_importances_
