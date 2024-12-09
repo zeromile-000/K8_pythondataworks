@@ -157,3 +157,110 @@ from sklearn.metrics import accuracy_score
 y_pred=forest.predict(X_test)
 print(forest.score(X_train, y_train))
 print(accuracy_score(y_pred, y_test))
+
+### 커널 서포트 벡터 머신
+- 머신러닝 지도학습 모델로, 분류와 회귀 과제에 사용
+- 평면도를 이용하여 벡터와 벡터 사이의 착안점을 비교
+- 데이터를 튀길 건데 어떻게 튀기는지는 알지마라.
+### 알고리즈믹하게 과대적합이 일어나면 해결 불가능하다.
+
+### SVC 사용절차
+1. 모델 불러오기
+from sklearn.svm import SVC
+
+2. 모델 적용
+svc = SVC()
+svc.fit(X_train, y_train)
+
+3. 모델 검증
+print(svc.score(X_train, y_train))
+print(svc.score(X_test, y_test))
+
+### SVM에 적합한 전처리
+min_on_training = X_train.min(axis=0) # 각 독립변수의 최소값을 가져오기
+min_on_training
+range_on_training = (X_train - min_on_training).max(axis=0) # 최소값을 제외한 최대값을 계산
+range_on_training
+
+X_train_scaled = (X_train - min_on_training) / range_on_training # 각 독립 변수에서 최소값을 빼고, 그 결과를 각 독립 변수의 범위로 나누기, # 모든 독립 변수의 값이 0과 1 사이로 정규화, 각 독립 변수의 최소값은 0, 최대값은 1
+print(X_train_scaled.min(axis=0), X_train_scaled.max(axis=0))  # 최소값, 최대값 출력
+
+### SVM의 C값을 조정
+svc = SVC(C=20) 
+# C값이 적으면 과소적합 발생, 많으면 과대적합 발생
+
+### 데이터 분석 과정(시계열이면 데이터를 알고 있어야 한다.)
+1) 데이터 수집
+- 시계열, 시계열이 아님
+
+2) 데이터 정제
+- 시계열, 시계열이 아님
+
+3) 데이터 분석
+- 시계열, 시계열 아님
+
+4) 배포
+
+### CSV 파일 불러와서 객체 생성
+import pandas as pd
+ram_prices = pd.read_csv("data/ram_price.csv")
+
+### matplotlib 도식화
+import matplotlib.pyplot as plt
+plt.plot(ram_prices.date, ram_prices.price)
+plt.xlabel("년도")
+plt.ylabel("가격 ($/Mbyte)")
+plt.show()
+
+### log 그래프로 변경
+plt.semilogy(ram_prices.date, ram_prices.price)
+
+### y 축의 폰트를 consolas로 변경
+plt.yticks(fontname = "consolas")
+
+### 시계열 데이터(학습, 테스트)분리
+## boolean index
+data_train = ram_prices[ram_prices.date < 2000]
+data_test = ram_prices[ram_prices.date >= 2000]
+
+# 판다스 필수 역량
+1) 새로운 열 추가 
+2) 열 삭제 
+3) 데이터 뽑아내기(csv, ... .. 등 다른파일로) # to csv, to_
+4) bool index 
+
+# 학습데이터와 테스트 데이터를 분류(y값은 log 함수를 적용)
+# data_train.date #인덱스가 포함된 데이터 이기때문에 사용할 수 없다.
+X_train = data_train.date.to_numpy() [:,np.newaxis]
+y_train = np.log(data_train.price) # np의 log만 사용하자!!
+
+# 결정트리의 회귀와 선형 회귀 예측기를 생성하고, 데이터에 학습
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.linear_model import LinearRegression
+
+tree = DecisionTreeRegressor().fit(X_train, y_train)
+linear_reg = LinearRegression().fit(X_train, y_train)
+
+## 시계열 데이터에는 랜덤 포레스트, 결정 트리를 사용하기에는 옳지 않다.
+## 원본 데이터를 모를 떄는 랜덤 포레스트 or 결정 트리를 먼저 사용하여 중요한 특성(feature)을 먼저 파악하자. 
+## 선형부터 그어보기, 중요한 데이터 파악
+
+
+## 비지도 학습
+step 1 전처리
+- 데이터의 스케일을 조정하여 알고리즘의 성능을 개선
+1) Min-MAX 정규화 : 데이터의 값을 0과 1 사이로 변환하는 방법
+2) 표준화(Standardization) : 데이터의 평균을 0, 표준편차를 1로 변환하는 방법
+
+step 2 특성추출
+- 고차원 데이터를 저차원으로 변환하여 데이터의 주요 특성을 유지하는 과정
+1) PCA(Principal Component Analysis), 차원 축소 : 데이터의 분산을 최대화하는 2) 방향으로 새로운 축(주성분)을 생성하여 차원을 축소하는 기법
+3) t-SNE : 고차원 데이터를 저차원으로 변환하여 데이터 포인트 간의 유사성을 유지하는 비선형 차원 축소 기법
+
+step 3 군집화
+1) DBSCAN : 데이터 포인트의 밀도를 기반으로 군집을 형성하는 알고리즘
+
+
+
+
+
