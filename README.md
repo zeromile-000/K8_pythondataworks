@@ -247,6 +247,10 @@ linear_reg = LinearRegression().fit(X_train, y_train)
 
 
 ## 비지도 학습
+- 타겟이 없다.
+- 우리도 답을 모른다.
+공리 : 유사한 데이터는 유사하게 동작한다.
+
 step 1 전처리
 - 데이터의 스케일을 조정하여 알고리즘의 성능을 개선
 1) Min-MAX 정규화 : 데이터의 값을 0과 1 사이로 변환하는 방법
@@ -254,11 +258,88 @@ step 1 전처리
 
 step 2 특성추출
 - 고차원 데이터를 저차원으로 변환하여 데이터의 주요 특성을 유지하는 과정
-1) PCA(Principal Component Analysis), 차원 축소 : 데이터의 분산을 최대화하는 2) 방향으로 새로운 축(주성분)을 생성하여 차원을 축소하는 기법
-3) t-SNE : 고차원 데이터를 저차원으로 변환하여 데이터 포인트 간의 유사성을 유지하는 비선형 차원 축소 기법
+1) PCA(Principal Component Analysis), 차원 축소 : 데이터의 분산을 최대화하는 방향으로 새로운 축(주성분)을 생성하여 차원을 축소하는 기법
+2) t-SNE : 고차원 데이터를 저차원으로 변환하여 데이터 포인트 간의 유사성을 유지하는 비선형 차원 축소 기법
 
 step 3 군집화
 1) DBSCAN : 데이터 포인트의 밀도를 기반으로 군집을 형성하는 알고리즘
+
+### StandardScaler, MinMaxScaler, Normalizer : 아웃라이어에 예민하다.
+### 아웃라이어에 노출된 데이터는 RobustScaler를 사용하는 것이 현명하다
+### 전처리 과정에서 누락데이터와 아웃라이어가 발생할 경우 결정을 해야할 떄가 생긴다.
+
+# 중간 값 (Median)
+- 데이터가 정렬되었을 때, 중앙에 위치한 값
+
+# 사분위 값 (Quartiles)
+- 사분위 값은 데이터를 4등분한 값으로, 분포의 특정 지점
+
+1사분위(Q1): 하위 25%에 해당하는 값(데이터의 25%가 이 값 이하).
+2사분위(Q2): 중간 값(데이터의 50%가 이 값 이하).
+3사분위(Q3): 상위 25%에 해당하는 값(데이터의 75%가 이 값 이하).
+
+# MinMaxScaler
+- 데이터를 특정 최소값과 최대값(기본적으로 0과 1) 사이로 스케일링
+- 원본 형태를 유지해야 할 경우 사용
+
+### MinMaxScaler 사용방법
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+scaler.fit(X_train)
+X_train_scaled = scaler.transform(X_train)
+X_train_scaled
+
+### 테스트 데이터를 MinMaxScaler로 변환하고 최소값과 최대값을 출력
+X_test_scaled = scaler.transform(X_test)
+print(X_test_scaled.min(axis=0), X_test_scaled.max(axis=0))
+
+### StandardScaler
+- 데이터를 평균이 0, 표준편차가 1이 되도록 변환
+- 단위값등이 다 달라져서 어떤 값으로 컬럼을 일치 시켜야 할 떄 
+
+### StandardScaler 사용방법
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+X_train_scaled = scaler.fit(X_train).transform(X_train)
+X_train_scaled
+
+### PCA(주성분 분석)
+- 데이터의 분산을 최대화하는 새로운 축(차원)을 찾는 과정에서 생성되는 직교(orthogonal)벡터들
+- 중요도를 알 수 없기 떄문에 
+- 차수를 2차 평면으로 차근차근 잘라보기
+
+### 차원축소(Dimensionality Reduction)
+- 높은 차원의 데이터를 더 적은 차원의 데이터로 변환
+- 데이터의 대부분의 정보를 유지하면서 불필요한 차원을 제거
+- 비지도 데이터의 중요도를 판별 후 전처리로 돌아감 최종에는 군집으로 이동 -> 답안 작성(레이블 결정, 타겟 결정)
+
+### PCA로 데이터 변환
+from sklearn.decomposition import PCA
+pca = PCA(n_components=2)
+pca.fit(x_scaled)
+X_pca = pca.transform(x_scaled)
+print(x_scaled.shape, X_pca.shape)
+
+### PCA 데이터 시각화
+plt.figure(figsize=(8,8))
+mglearn.discrete_scatter(X_pca[:,0], X_pca[:,1], cancer.target)
+plt.show()
+
+### 군집이론
+- 유사한 특성을 가진 그룹(군집, 클러스터)을 식별하는 데 사용되는 기법
+
+### KMeans
+- 클러스터의 중심을 몇개로 잡는지가 중점이다.
+- 평균점과 새로운 데이터가 들어오면 알고리즘이 붕괴될 수 있다.
+- 속도가 빠른 장점이 있다.
+
+### 병합 군집
+- 계층적 군집(Hierarchical Clustering)의 한 방법으로, 데이터를 개별 군집으로 시작하여 점차 병합하여 하나의 군집이 될 때까지 반복하는 바텀업 방식 군집화 방법
+- 계산을 전부 다 해야하기 떄문에 속도가 느리다는 단점이 있다.
+
+### DBSCAN
+- 밀도 기반 군집화 알고리즘으로, 데이터의 밀집된 영역을 클러스터로 간주하고, 밀도가 낮은 영역은 노이즈 또는 이상치로 처리하는 방법
+
 
 
 
