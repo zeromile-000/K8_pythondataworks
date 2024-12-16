@@ -340,8 +340,21 @@ plt.show()
 ### DBSCAN
 - 밀도 기반 군집화 알고리즘으로, 데이터의 밀집된 영역을 클러스터로 간주하고, 밀도가 낮은 영역은 노이즈 또는 이상치로 처리하는 방법
 
+### 클래스(모델)을 임포트할 떄 저장되어 있는 위치를 기억하자!
+### Pandas가 아니면 어떤 컬럼인지 알 수 없다. # scaler.fit_transform(df)
+
+### t-SNE
+- 고차원 데이터를 저차원(주로 2D 또는 3D) 공간에 시각화하기 위한 차원 축소 알고리즘
+- 실행할 떄마다 값이 달라진다.
 
 
+### 교차검증
+- 머신러닝 모델의 성능을 평가하고 일반화 성능을 향상시키기 위해 데이터를 훈련 데이터와 검증 데이터로 반복적으로 나누어 검증하는 방법
+- 델이 훈련 데이터에 과적합(overfitting)되지 않고 새로운 데이터에도 잘 작동하도록 돕는다.
+
+### 교차검증 사용
+from sklearn.model_selection import cross_val_score
+scores = cross_val_score(logreg, iris.data, iris.target)
 
 
 
