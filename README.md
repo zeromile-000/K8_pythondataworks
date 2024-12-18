@@ -356,5 +356,50 @@ plt.show()
 from sklearn.model_selection import cross_val_score
 scores = cross_val_score(logreg, iris.data, iris.target)
 
+### 5장에서 배우는 것
+1) 데이터 폴드를 통해 데이터를 높임
+2) CV : 랜덤 또는 서치를 통해 매개변수를 조절
+
+### 혼동행렬(Confusion Matrix)
+- 머신러닝 분류 모델의 성능을 평가할 때 사용되는 표 형식의 도구
+- 모델이 예측한 결과와 실제 정답 간의 관계를 정리하여 성능을 시각적으로 확인할 수 있게 한다. 
+- 데이터 머신러닝 380 ~ 381쪽 중요!
+
+### 혼동행렬의 구조
+True Positive (TP): 실제로 Positive이고 모델이 Positive로 예측한 경우 (올바른 긍정 예측)
+True Negative (TN): 실제로 Negative이고 모델이 Negative로 예측한 경우 (올바른 부정 예측)
+False Positive (FP): 실제로 Negative인데 모델이 Positive로 예측한 경우 (오류 긍정 예측), 2종 오류
+False Negative (FN): 실제로 Positive인데 모델이 Negative로 예측한 경우 (오류 부정 예측), 1종 오류
+
+### 주요 지표 계산
+1. 정확도(Accuracy)
+- 모델이 얼마나 정확하게 예측, 데이터가 활용도가 높은가?
+Accuracy= TP+TN+FP+FN / TP+TN
+
+2. 정밀도(Precision)
+- 모델이 Positive로 예측한 것 중 실제 Positive의 비율
+
+3. 재현율(Recall, Sensitivity)
+- 실제 Positive 중에서 모델이 Positive로 정확히 예측한 비율
+
+4. F1-스코어(F1 Score)
+- 정밀도와 재현율의 조화평균으로, 두 값 사이의 균형
+
+5. 특이도(Specificity)
+- 실제 Negative 중에서 모델이 Negative로 정확히 예측한 비율
+
+### Bias
+- 데이터가 특정 방향으로 편향되어 있는 상태
+
+​### 직관적 이해를 돕는 예시: 병원 진단
+1종 오류: 병이 없는데 병이 있다고 진단 (거짓 양성, False Positive)
+2종 오류: 병이 있는데 병이 없다고 진단 (거짓 음성, False Negative)
+
+### 영화 감정 분석<긍정, 부정>
+1장 데이터 수집
+2장 전처리 : Pandas로 변환
+3장 특징 추출 : 
+4장 모델 학습 : 랜덤 포레스트, 선형 모델
+5장 모델 평가 : 혼동행렬, 정확도
 
 
